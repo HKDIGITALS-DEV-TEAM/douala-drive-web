@@ -1,0 +1,9 @@
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: douala-drive-web-client
+    ports:
+      - "5021:5021"
+    restart: always
