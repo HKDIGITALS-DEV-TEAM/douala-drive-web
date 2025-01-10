@@ -24,7 +24,7 @@ FROM nginx:stable-alpine
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 # Exposer le port (par exemple, 80)
-EXPOSE 5021
+EXPOSE 5022
 
 # Commande de démarrage
 CMD ["nginx", "-g", "daemon off;"]

@@ -5,5 +5,5 @@ services:
       dockerfile: Dockerfile
     container_name: douala-drive-web-client
     ports:
-      - "5021:5021"
+      - "5022:5022"
     restart: always
