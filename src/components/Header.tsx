@@ -1,5 +1,3 @@
-import React from 'react';
-import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import Navigation from './Navigation';
 import { Link } from 'react-router-dom';
@@ -18,7 +16,7 @@ export default function Header() {
               aria-label="Retour à l'accueil"
             >
               <img 
-                src="https://doualadrive.com/wp-content/uploads/2024/12/cropped-logo-site-1.webp" 
+                src="/logo.png" 
                 alt="Douala Drive Logo" 
                 className="h-12 w-auto"
               />

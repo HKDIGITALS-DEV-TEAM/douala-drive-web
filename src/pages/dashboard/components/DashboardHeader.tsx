@@ -13,7 +13,7 @@ export default function DashboardHeader() {
               className="text-gray-400 hover:text-primary transition-colors text-sm mt-2"
             >
               <img
-                src="https://doualadrive.com/wp-content/uploads/2024/12/cropped-logo-site-1.webp"
+                src="/logo.png"
                 alt="Douala Drive Logo"
                 className="h-8 w-auto"
               />
