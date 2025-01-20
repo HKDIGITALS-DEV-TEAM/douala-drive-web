@@ -8,7 +8,7 @@ import Comments from "../components/blog/Comments";
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>(); // Typage de slug
   console.log(slug);
-  
+
   const navigate = useNavigate();
   const { article, isLoading, isError } = useArticleBySlug(slug || ""); // Gestion du slug
 
@@ -58,7 +58,10 @@ export default function BlogPostPage() {
             <h1 className="text-3xl font-bold text-gray-900">
               {article.title}
             </h1>
-            <p className="text-gray-500 mt-4">{article.content}</p>
+            <div
+              className="text-gray-500 mt-4"
+              dangerouslySetInnerHTML={{ __html: article.content }}
+            ></div>
             <PostActions postId={article.id} />
             <Comments postId={article.id} />
           </div>

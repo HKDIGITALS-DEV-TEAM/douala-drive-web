@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import JoditEditor from "jodit-react";
 import { X, Wand2 } from "lucide-react";
 import AIPromptForm from "../../../../components/admin/blog/AIPromptForm";
 import { generateArticleContent } from "../../../../services/openai";
@@ -7,7 +8,7 @@ import { Article, ArticleRequest } from "../../../../libs/article/types";
 import {
   useArticleCategories,
   useArticleStatuses,
-  useCreateOrUpdateArticle
+  useCreateOrUpdateArticle,
 } from "../../../../libs/article/queries";
 import useArticleStore from "../../../../libs/article/store";
 import useAuthStore from "../../../../libs/auth/store"; // Pour récupérer l'utilisateur connecté
@@ -20,6 +21,7 @@ interface ArticleFormProps {
 }
 
 export default function ArticleForm({ article, onClose }: ArticleFormProps) {
+  const editor = useRef(null);
   const { mutate: createOrUpdateArticle } = useCreateOrUpdateArticle();
   const { categoriesArticle, setCategoriesArticle } = useArticleStore();
   const { statusesArticle, setStatusesArticle } = useArticleStore();
@@ -314,14 +316,17 @@ export default function ArticleForm({ article, onClose }: ArticleFormProps) {
                 />
               </div>
             )}
-            <textarea
+            <JoditEditor
+              ref={editor}
               value={formData.content || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, content: e.target.value })
-              }
-              rows={10}
+              config={{
+                readonly: false,
+                placeholder: "Écrivez le contenu ici...",
+              }}
+              onBlur={(newContent) => {
+                setFormData((prev) => ({ ...prev, content: newContent }));
+              }}
               className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-              required
             />
           </div>
 

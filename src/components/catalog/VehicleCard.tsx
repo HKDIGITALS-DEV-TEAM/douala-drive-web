@@ -68,7 +68,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
               <p className="text-gray-600">Couleur: {color}</p>
             </div>
           </div>
-          <p className="text-xl font-bold text-[#FFD700]">{price} /jour</p>
+          <p className="text-xl font-bold text-[#FFD700]"><span className="text-gray-600 text-sm">A partir de :</span> {price} /jour</p>
         </div>
 
         <p className="text-gray-600 mb-6">{description}</p>
