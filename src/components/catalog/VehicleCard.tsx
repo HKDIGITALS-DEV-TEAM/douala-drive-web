@@ -39,20 +39,33 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
     <>
       {/* Card avec aperçu */}
       <div className="bg-white rounded-2xl shadow-md overflow-hidden transition-transform hover:scale-105">
-        <img
-          src={vehicleImage}
-          alt={`${brand} ${name}`}
-          className="w-full h-48 object-cover"
-        />
-        <div className="p-4">
-          <h3
-            className="text-2xl font-bold text-gray-900 cursor-pointer hover:text-[#FFD700]"
-            onClick={toggleModal}
-          >
-            {brand} {name}
-          </h3>
-          <p className="text-gray-600">Catégorie: {category.name}</p>
-          <p className="text-gray-600">{description}</p>
+        <div className="relative">
+          <img
+            src={vehicleImage}
+            alt={`${brand} ${name}`}
+            className="w-full h-48 object-cover"
+          />
+          {color && (
+            <span
+              className="absolute top-4 right-4 rounded-full w-6 h-6 border border-gray-300"
+              style={{ backgroundColor: color }}
+              title={`Couleur: ${color}`}
+            ></span>
+          )}
+        </div>
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-2">
+            <h3
+              className="text-2xl font-bold text-gray-900 cursor-pointer hover:text-[#FFD700]"
+              onClick={toggleModal}
+            >
+              {brand} {name}
+            </h3>
+            <span className="bg-[#FFD700] text-black px-3 py-1 rounded-full text-sm font-semibold shadow-sm">
+              {category.name}
+            </span>
+          </div>
+          <p className="text-gray-600 leading-relaxed">{description}</p>
         </div>
       </div>
 
@@ -77,13 +90,30 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
               alt={`${brand} ${name}`}
               className="w-full h-64 object-cover rounded-xl"
             />
-            <div className="p-4">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                {brand} {name}
-              </h2>
-              <p className="text-gray-600 mb-2">Catégorie: {category.name}</p>
-              <p className="text-gray-600 mb-2">Couleur: {color}</p>
-              <p className="text-gray-600 mb-4">{description}</p>
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-3xl font-bold text-gray-900">
+                  {brand} {name}
+                </h2>
+                <span className="bg-[#FFD700] text-black px-3 py-1 rounded-full text-sm font-semibold shadow-sm">
+                  {category.name}
+                </span>
+              </div>
+              <div className="flex items-center gap-4 mb-4">
+                {color && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">Couleur:</span>
+                    <span
+                      className="w-6 h-6 rounded-full border border-gray-300"
+                      style={{ backgroundColor: color }}
+                      title={`Couleur: ${color}`}
+                    ></span>
+                  </div>
+                )}
+              </div>
+              <p className="text-gray-600 mb-4 leading-relaxed">
+                {description}
+              </p>
               <p className="text-xl font-bold text-[#FFD700]">
                 Prix : {price} /jour
               </p>
@@ -109,7 +139,9 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
 
               <button
                 onClick={() =>
-                  isAvailable && !isComingSoon && openWhatsApp(`${brand} ${name}`)
+                  isAvailable &&
+                  !isComingSoon &&
+                  openWhatsApp(`${brand} ${name}`)
                 }
                 className={`mt-6 w-full py-3 rounded-lg transition-colors ${
                   isAvailable && !isComingSoon
