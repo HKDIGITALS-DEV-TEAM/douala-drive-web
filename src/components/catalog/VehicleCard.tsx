@@ -21,7 +21,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
     status,
     features,
     description,
-    video,
+    //video,
   } = vehicle;
 
   const vehicleImage =
@@ -147,7 +147,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
               )}
 
               {/* Vidéo de présentation */}
-              {video && (
+              {/*video && (
                 <div className="mt-6">
                   <button
                     className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition"
@@ -157,7 +157,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
                     Visionner la vidéo
                   </button>
                 </div>
-              )}
+              )*/}
 
               <button
                 onClick={() =>

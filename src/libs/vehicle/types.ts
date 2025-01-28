@@ -8,7 +8,7 @@ export interface Vehicle {
   category: Category;
   color: string;
   image: string | null;
-  video: string | null;
+  // video: string | null;
   price: number;
   status: Status;
   features: string;
@@ -44,7 +44,7 @@ export interface VehicleRequest {
   category_id: string;
   color: string;
   image: string | null; // Peut être un lien ou un chemin local
-  video: string | null;
+  // video: string | null;
   price: number;
   status_id: string;
   features: string | null; // Optionnel

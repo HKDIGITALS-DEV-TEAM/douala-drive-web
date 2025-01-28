@@ -31,19 +31,19 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
     status_id: vehicle?.status?.id || "",
     features: vehicle?.features || null,
     description: vehicle?.description || null,
-    video: vehicle?.video || null,
+    /* video: vehicle?.video || null, */
   });
 
   const [useFileInput, setUseFileInput] = useState<boolean>(true);
-  const [useVideoFileInput, setUseVideoFileInput] = useState<boolean>(true);
+  //const [useVideoFileInput, setUseVideoFileInput] = useState<boolean>(true);
   const [previewImage, setPreviewImage] = useState<string | null>(
     formData.image
   );
-  const [previewVideo, setPreviewVideo] = useState<string | null>(
+  /*const [previewVideo, setPreviewVideo] = useState<string | null>(
     formData.video
-  );
+  );*/
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [videoFile, setVideoFile] = useState<File | null>(null);
+  //const [videoFile, setVideoFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (!categories) refetchCategories();
@@ -54,7 +54,7 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
     e.preventDefault();
 
     let imageUrl = formData.image;
-    let videoUrl = formData.video;
+    //let videoUrl = formData.video;
 
     if (photoFile && useFileInput) {
       try {
@@ -66,7 +66,7 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
       }
     }
 
-    if (videoFile && useVideoFileInput) {
+    /*if (videoFile && useVideoFileInput) {
       try {
         const response = await uploadImage(videoFile); // Réutilisation de l'upload pour les vidéos
         videoUrl = response.filename;
@@ -74,12 +74,12 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
         logger.error("Erreur lors de l'upload de la vidéo :", error);
         return;
       }
-    }
+    }*/
 
     const vehicleData: VehicleRequest = {
       ...formData,
       image: imageUrl,
-      video: videoUrl,
+      //video: videoUrl,
     };
 
     const isUpdate = !!vehicle?.id;
@@ -116,7 +116,7 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
     setFormData({ ...formData, image: url });
   };
 
-  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  /*const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setVideoFile(file);
@@ -129,7 +129,7 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
     const url = e.target.value;
     setPreviewVideo(url);
     setFormData({ ...formData, video: url });
-  };
+  };*/
 
   const handleFeatureChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const features = e.target.value
@@ -306,7 +306,7 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
           )}
 
           {/* Vidéo */}
-          <div className="mb-4">
+          {/*<div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Vidéo de présentation
             </label>
@@ -337,9 +337,9 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
                 placeholder="Lien vers la vidéo"
               />
             )}
-          </div>
+          </div>*/}
 
-          {previewVideo && (
+          {/*previewVideo && (
             <div className="mt-4">
               <video
                 src={previewVideo}
@@ -347,7 +347,7 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
                 className="w-full h-48 rounded-md"
               />
             </div>
-          )}
+          )*/}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
