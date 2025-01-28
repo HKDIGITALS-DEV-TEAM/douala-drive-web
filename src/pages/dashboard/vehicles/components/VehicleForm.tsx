@@ -31,13 +31,19 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
     status_id: vehicle?.status?.id || "",
     features: vehicle?.features || null,
     description: vehicle?.description || null,
+    video: vehicle?.video || null,
   });
 
   const [useFileInput, setUseFileInput] = useState<boolean>(true);
+  const [useVideoFileInput, setUseVideoFileInput] = useState<boolean>(true);
   const [previewImage, setPreviewImage] = useState<string | null>(
     formData.image
   );
+  const [previewVideo, setPreviewVideo] = useState<string | null>(
+    formData.video
+  );
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (!categories) refetchCategories();
@@ -48,6 +54,7 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
     e.preventDefault();
 
     let imageUrl = formData.image;
+    let videoUrl = formData.video;
 
     if (photoFile && useFileInput) {
       try {
@@ -59,9 +66,20 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
       }
     }
 
+    if (videoFile && useVideoFileInput) {
+      try {
+        const response = await uploadImage(videoFile); // Réutilisation de l'upload pour les vidéos
+        videoUrl = response.filename;
+      } catch (error) {
+        logger.error("Erreur lors de l'upload de la vidéo :", error);
+        return;
+      }
+    }
+
     const vehicleData: VehicleRequest = {
       ...formData,
       image: imageUrl,
+      video: videoUrl,
     };
 
     const isUpdate = !!vehicle?.id;
@@ -69,7 +87,7 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
     //const { id, ...dataToSend } = vehicleData; // Exclut `id` du corps de la requête
 
     createOrUpdateVehicle(
-      { ...vehicleData, id: isUpdate ? vehicle.id : undefined  }, // Gère l'ID selon le contexte
+      { ...vehicleData, id: isUpdate ? vehicle.id : undefined }, // Gère l'ID selon le contexte
       {
         onSuccess: () => {
           onClose();
@@ -96,6 +114,21 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
     const url = e.target.value;
     setPreviewImage(url);
     setFormData({ ...formData, image: url });
+  };
+
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setVideoFile(file);
+      setPreviewVideo(URL.createObjectURL(file)); // Prévisualisation de la vidéo locale
+      setFormData({ ...formData, video: file.name });
+    }
+  };
+
+  const handleVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setPreviewVideo(url);
+    setFormData({ ...formData, video: url });
   };
 
   const handleFeatureChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -268,6 +301,50 @@ export default function VehicleForm({ vehicle, onClose }: VehicleFormProps) {
                 src={previewImage}
                 alt="Prévisualisation"
                 className="w-full h-48 object-cover rounded-md"
+              />
+            </div>
+          )}
+
+          {/* Vidéo */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Vidéo de présentation
+            </label>
+            <div className="flex items-center mb-4">
+              <label className="text-sm font-medium text-gray-700 mr-2">
+                Utiliser un fichier ?
+              </label>
+              <input
+                type="checkbox"
+                checked={useVideoFileInput}
+                onChange={() => setUseVideoFileInput(!useVideoFileInput)}
+                className="rounded focus:ring-primary"
+              />
+            </div>
+            {useVideoFileInput ? (
+              <input
+                type="file"
+                accept="video/*"
+                onChange={handleVideoChange}
+                className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+              />
+            ) : (
+              <input
+                type="url"
+                value={formData.video || ""}
+                onChange={handleVideoUrlChange}
+                className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                placeholder="Lien vers la vidéo"
+              />
+            )}
+          </div>
+
+          {previewVideo && (
+            <div className="mt-4">
+              <video
+                src={previewVideo}
+                controls
+                className="w-full h-48 rounded-md"
               />
             </div>
           )}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, X } from "lucide-react";
+import { Check, Play, X } from "lucide-react";
 import { Vehicle } from "../../libs/vehicle/types";
 import { openWhatsApp } from "../../utils/whatsapp";
 
@@ -9,6 +9,7 @@ interface VehicleCardProps {
 
 export default function VehicleCard({ vehicle }: VehicleCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isImageFullView, setIsImageFullView] = useState(false);
 
   const {
     name,
@@ -20,6 +21,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
     status,
     features,
     description,
+    video,
   } = vehicle;
 
   const vehicleImage =
@@ -35,6 +37,11 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
     setIsModalOpen(!isModalOpen);
   };
 
+  // Fonction pour afficher/fermer l'image en plein écran
+  const toggleImageFullView = () => {
+    setIsImageFullView(!isImageFullView);
+  };
+
   return (
     <>
       {/* Card avec aperçu */}
@@ -44,6 +51,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
             src={vehicleImage}
             alt={`${brand} ${name}`}
             className="w-full h-48 object-cover"
+            onClick={toggleImageFullView}
           />
           {color && (
             <span
@@ -89,6 +97,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
               src={vehicleImage}
               alt={`${brand} ${name}`}
               className="w-full h-64 object-cover rounded-xl"
+              onClick={toggleImageFullView}
             />
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
@@ -137,6 +146,19 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
                 </div>
               )}
 
+              {/* Vidéo de présentation */}
+              {video && (
+                <div className="mt-6">
+                  <button
+                    className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition"
+                    onClick={() => window.open(video, "_blank")}
+                  >
+                    <Play className="size-5 mr-2" />
+                    Visionner la vidéo
+                  </button>
+                </div>
+              )}
+
               <button
                 onClick={() =>
                   isAvailable &&
@@ -154,6 +176,26 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Vue plein écran de l'image */}
+      {isImageFullView && (
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+          onClick={toggleImageFullView}
+        >
+          <img
+            src={vehicleImage}
+            alt={`${brand} ${name}`}
+            className="w-auto max-w-full max-h-full"
+          />
+          <button
+            className="absolute top-4 right-4 text-white"
+            onClick={toggleImageFullView}
+          >
+            <X className="w-6 h-6" />
+          </button>
         </div>
       )}
     </>

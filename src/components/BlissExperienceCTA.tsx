@@ -61,6 +61,7 @@ export default function BlissExperienceCTA() {
             <div className="mt-6">
               <Link
                 to="https://blissexperiencestays.bookeddirectly.com"
+                target="_blank"
                 className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-[#FFD700] hover:bg-[#FFD700]/90 transition-colors duration-200"
               >
                 En savoir plus
