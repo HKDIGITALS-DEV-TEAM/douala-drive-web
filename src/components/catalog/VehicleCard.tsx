@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, Play, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { Vehicle } from "../../libs/vehicle/types";
 import { openWhatsApp } from "../../utils/whatsapp";
 
@@ -21,7 +21,6 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
     status,
     features,
     description,
-    //video,
   } = vehicle;
 
   const vehicleImage =
@@ -37,11 +36,6 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
     setIsModalOpen(!isModalOpen);
   };
 
-  // Fonction pour afficher/fermer l'image en plein écran
-  const toggleImageFullView = () => {
-    setIsImageFullView(!isImageFullView);
-  };
-
   return (
     <>
       {/* Card avec aperçu */}
@@ -50,8 +44,8 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
           <img
             src={vehicleImage}
             alt={`${brand} ${name}`}
-            className="w-full h-48 object-cover"
-            onClick={toggleImageFullView}
+            className="w-full h-48 object-cover cursor-pointer"
+            onClick={toggleModal}
           />
           {color && (
             <span
@@ -77,28 +71,34 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
         </div>
       </div>
 
-      {/* Modal plein écran */}
+      {/* Modal plein écran amélioré */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
           onClick={toggleModal} // Fermer le modal en cliquant en dehors
         >
           <div
-            className="relative bg-white rounded-2xl shadow-lg w-full max-w-4xl mx-auto p-6 overflow-y-auto"
+            className="relative bg-white rounded-2xl shadow-lg w-full max-w-4xl mx-auto max-h-[90vh] overflow-y-auto p-6"
             onClick={(e) => e.stopPropagation()} // Empêcher la fermeture en cliquant à l'intérieur
           >
+            {/* Bouton de fermeture repositionné */}
             <button
               onClick={toggleModal}
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
+              className="absolute -top-3 -right-3 bg-black/70 text-white p-2 rounded-full shadow-lg hover:bg-black/90 transition-all"
             >
               <X className="w-6 h-6" />
             </button>
-            <img
-              src={vehicleImage}
-              alt={`${brand} ${name}`}
-              className="w-full h-64 object-cover rounded-xl"
-              onClick={toggleImageFullView}
-            />
+
+            {/* Image cliquable */}
+            <div className="relative">
+              <img
+                src={vehicleImage}
+                alt={`${brand} ${name}`}
+                className="w-full h-auto max-h-72 object-cover rounded-xl cursor-pointer"
+                onClick={() => setIsImageFullView(true)}
+              />
+            </div>
+
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-3xl font-bold text-gray-900">
@@ -108,6 +108,8 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
                   {category.name}
                 </span>
               </div>
+
+              {/* Détails couleur */}
               <div className="flex items-center gap-4 mb-4">
                 {color && (
                   <div className="flex items-center gap-2">
@@ -120,18 +122,19 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
                   </div>
                 )}
               </div>
-              <p className="text-gray-600 mb-4 leading-relaxed">
-                {description}
-              </p>
+
+              {/* Description */}
+              <p className="text-gray-600 mb-4 leading-relaxed">{description}</p>
+
+              {/* Prix */}
               <p className="text-xl font-bold text-[#FFD700]">
                 Prix : {price} /jour
               </p>
 
+              {/* Caractéristiques */}
               {featureList.length > 0 && (
                 <div className="mt-6">
-                  <h4 className="text-lg font-semibold mb-2">
-                    Caractéristiques:
-                  </h4>
+                  <h4 className="text-lg font-semibold mb-2">Caractéristiques:</h4>
                   <ul className="grid grid-cols-2 gap-2">
                     {featureList.map((feature, index) => (
                       <li
@@ -146,19 +149,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
                 </div>
               )}
 
-              {/* Vidéo de présentation */}
-              {/*video && (
-                <div className="mt-6">
-                  <button
-                    className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition"
-                    onClick={() => window.open(video, "_blank")}
-                  >
-                    <Play className="size-5 mr-2" />
-                    Visionner la vidéo
-                  </button>
-                </div>
-              )*/}
-
+              {/* Bouton de réservation */}
               <button
                 onClick={() =>
                   isAvailable &&
@@ -183,7 +174,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
       {isImageFullView && (
         <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-          onClick={toggleImageFullView}
+          onClick={() => setIsImageFullView(false)}
         >
           <img
             src={vehicleImage}
@@ -191,8 +182,8 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
             className="w-auto max-w-full max-h-full"
           />
           <button
-            className="absolute top-4 right-4 text-white"
-            onClick={toggleImageFullView}
+            className="absolute top-4 right-4 text-white bg-black/70 p-2 rounded-full shadow-lg hover:bg-black/90 transition-all"
+            onClick={() => setIsImageFullView(false)}
           >
             <X className="w-6 h-6" />
           </button>

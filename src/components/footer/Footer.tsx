@@ -1,4 +1,3 @@
-import React from 'react';
 import ContactInfo from './ContactInfo';
 import LegalLinks from './LegalLinks';
 import OpeningHours from './OpeningHours';

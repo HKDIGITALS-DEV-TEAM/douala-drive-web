@@ -56,7 +56,7 @@ export default function PricingCard({
 
       {/* Liste des fonctionnalités */}
       {features.length > 0 && (
-        <ul className="mt-8 space-y-4">
+        <ul className="my-8 space-y-4">
           {features.map((feature, index) => (
             <li key={index} className="flex items-center">
               <div className="rounded-full bg-[#FFD700]/10 p-1">

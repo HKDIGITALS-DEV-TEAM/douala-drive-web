@@ -7,7 +7,7 @@ export default function ContactInfo() {
   // Informations par défaut en cas d'absence de configuration
   const defaultContact = {
     address: "Douala, Cameroun",
-    phone: "+237 00 00 00 00",
+    phone: "+237 670 45 90 29",
     email: "contact@doualadrive.com",
   };
 
